@@ -47,15 +47,15 @@ services:
       - mariadb_data:/var/lib/mysql
     networks:
       - app-network
-      
-  redis:
-    image: redis:latest
-    container_name: redis
+
+  valkey:
+    image: valkey:latest
+    container_name: valkey
     ports:
       - "${REDIS_PORT}:6379"
     volumes:
-      - redis-data:/data
-    command: ["redis-server", "--appendonly", "yes"]
+      - valkey-data:/data
+    command: ["valkey-server", "--appendonly", "yes"]
     profiles: [production, development, staging]
 
   # PHPStan Service
@@ -75,3 +75,4 @@ networks:
 
 volumes:
   mariadb_data:
+  valkey-data:
