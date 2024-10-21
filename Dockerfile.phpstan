@@ -1,0 +1,23 @@
+# Dockerfile.phpstan
+
+FROM php:7.4-cli
+
+# Install dependencies
+RUN apt-get update && apt-get install -y \
+    git \
+    unzip \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+WORKDIR /app
+
+# Install PHPStan
+RUN composer global require phpstan/phpstan
+
+# Add Composer's global bin directory to the PATH
+ENV PATH="/root/.composer/vendor/bin:${PATH}"
+
+# Copy the application code
+COPY . /app
